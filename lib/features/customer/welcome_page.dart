@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'rooms/rooms_page.dart';
+import 'services/services_page.dart'; // Hubi in waddadu la mid tahay halka uu ku yaallo services_page.dart
 import 'rooms/room_booking_page.dart'; // <--- Waa la soo dhoofiyey (imported) bogga ballanta
 
 const Color darkNavy = Color(0xFF0D0F14);
@@ -86,7 +87,7 @@ class _WelcomePageState extends State<WelcomePage> {
             : _selectedIndex == 1
                 ? const RoomsPage() // Index 1: Rooms Catalog
                 : _selectedIndex == 2
-                    ? RoomBookingPage(  // Index 2: Halkan waxaa si toos ah loogu xiray RoomBookingPage
+                    ? RoomBookingPage( // Index 2: Halkan waxaa si toos ah loogu xiray RoomBookingPage
                         room: {
                           'name': 'Royal Luxury Suite',
                           'category': 'VIP',
@@ -95,13 +96,15 @@ class _WelcomePageState extends State<WelcomePage> {
                           'description': 'Exclusive royal suite experience.'
                         },
                       )
-                    : Center(
-                        child: Text(
-                          'Page Index: $_selectedIndex\n(Halkan ku xir bogga u dhigma)',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      ),
+                    : _selectedIndex == 3
+                        ? const ServicesPage() // Index 3: Services Page
+                        : Center(
+                            child: Text(
+                              'Page Index: $_selectedIndex\n(Halkan ku xir bogga u dhigma)',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
       ),
       bottomNavigationBar: _buildBottomNav(),
     );

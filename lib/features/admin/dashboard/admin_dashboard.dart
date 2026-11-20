@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../rooms/admin_rooms_page.dart';
+import '../bookings/admin_bookings_page.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -329,8 +331,23 @@ class _AdminDashboardState extends State<AdminDashboard> {
   }
 
   void _onManagementTap(String title) {
-    if (title == 'Manage Rooms') {
-      _openManageRoomsSheet();
+    Widget? targetPage;
+    switch (title) {
+      case 'Manage Rooms':
+        targetPage = const AdminRoomsPage();
+        break;
+
+        case 'Bookings':
+        targetPage = const AdminRoomsPage();
+        break;
+      
+    }
+
+    if (targetPage != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => targetPage!),
+      );
       return;
     }
 
@@ -562,7 +579,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AdminRoomsPage()),
+                  );
+                },
                 child: const Text(
                   'View All  ›',
                   style: TextStyle(color: Color(0xFF8DB9E5), fontSize: 10),
@@ -719,7 +741,15 @@ class _AdminDashboardState extends State<AdminDashboard> {
             onTap: () {
               setState(() => selectedTab = i);
               if (i == 1) {
-                _openManageRoomsSheet();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AdminRoomsPage()),
+                );
+              } else if (i == 2) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AdminBookingsPage()),
+                );
               }
             },
             child: SizedBox(
@@ -841,6 +871,32 @@ class Metric {
   );
 }
 
+class Booking {
+  final String initials;
+  final String guest;
+  final String room;
+  final String date;
+  final String amount;
+  final String status;
+
+  const Booking(
+    this.initials,
+    this.guest,
+    this.room,
+    this.date,
+    this.amount,
+    this.status,
+  );
+}
+
+class QuickAction {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+
+  const QuickAction(this.icon, this.title, this.subtitle);
+}
+
 class _MetricCard extends StatelessWidget {
   final Metric metric;
 
@@ -916,6 +972,151 @@ class _MetricCard extends StatelessWidget {
   }
 }
 
+class _BookingRow extends StatelessWidget {
+  final Booking booking;
+
+  const _BookingRow({required this.booking});
+
+  @override
+  Widget build(BuildContext context) {
+    Color badgeColor;
+    if (booking.status == 'Confirmed' || booking.status == 'Checked in') {
+      badgeColor = const Color(0xFF83B5E4);
+    } else {
+      badgeColor = const Color(0xFFC3A46D);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 5,
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 13,
+                  backgroundColor: const Color(0xFF173B63).withOpacity(.45),
+                  child: Text(
+                    booking.initials,
+                    style: const TextStyle(
+                      color: Color(0xFF8DB9E5),
+                      fontSize: 8.5,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        booking.guest,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Color(0xFFF3F5F8),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        booking.room,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Color(0xFF858D99),
+                          fontSize: 8,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              booking.date,
+              style: const TextStyle(color: Color(0xFF858D99), fontSize: 9),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              booking.amount,
+              style: const TextStyle(
+                color: Color(0xFFF3F5F8),
+                fontSize: 9.5,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 65,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: badgeColor.withOpacity(.14),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                booking.status,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: badgeColor,
+                  fontSize: 8,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HeaderText extends StatelessWidget {
+  final String text;
+
+  const _HeaderText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        color: Color(0xFF69798C),
+        fontSize: 8,
+        fontWeight: FontWeight.bold,
+        letterSpacing: .3,
+      ),
+    );
+  }
+}
+
+class _AxisLabel extends StatelessWidget {
+  final String text;
+
+  const _AxisLabel(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        color: Color(0xFF69798C),
+        fontSize: 8,
+      ),
+    );
+  }
+}
+
 class _Panel extends StatelessWidget {
   final Widget child;
   final EdgeInsets padding;
@@ -964,292 +1165,119 @@ class PerformancePainter extends CustomPainter {
     ];
 
     final bookings = [
-      .78, .74, .70, .72, .67, .64, .59,
-      .61, .57, .54, .51, .52, .49, .46,
-      .44, .45, .48, .46, .49, .52, .55,
-      .53, .57, .55, .59, .57, .60, .58,
+      .78, .74, .68, .71, .60, .55, .48,
+      .53, .42, .47, .38, .43, .34, .40,
+      .31, .36, .42, .37, .49, .58, .65,
+      .61, .67, .63, .69, .65, .71, .68,
     ];
 
-    _drawLine(canvas, size, occupancy, const Color(0xFF397CC0), true);
-    _drawLine(canvas, size, bookings, const Color(0xFF60758E), false);
+    _drawSeries(
+      canvas,
+      size,
+      occupancy,
+      const Color(0xFF397CC0),
+      2.2,
+      fill: true,
+    );
+
+    _drawSeries(
+      canvas,
+      size,
+      bookings,
+      const Color(0xFF60758E),
+      1.6,
+      fill: false,
+    );
   }
 
-  void _drawLine(
+  void _drawSeries(
     Canvas canvas,
     Size size,
     List<double> values,
     Color color,
-    bool fill,
-  ) {
+    double strokeWidth, {
+    required bool fill,
+  }) {
+    if (values.isEmpty) return;
+
     final path = Path();
+    final stepX = values.length > 1 ? size.width / (values.length - 1) : 0.0;
 
     for (int i = 0; i < values.length; i++) {
-      final point = Offset(
-        size.width * i / (values.length - 1),
-        size.height * values[i],
-      );
-
+      final x = i * stepX;
+      final y = values[i].clamp(0.0, 1.0) * size.height;
       if (i == 0) {
-        path.moveTo(point.dx, point.dy);
+        path.moveTo(x, y);
       } else {
-        path.lineTo(point.dx, point.dy);
+        path.lineTo(x, y);
       }
     }
 
     if (fill) {
-      final area = Path.from(path)
+      final fillPath = Path.from(path)
         ..lineTo(size.width, size.height)
         ..lineTo(0, size.height)
         ..close();
 
-      final shader = LinearGradient(
-        colors: [
-          color.withOpacity(.30),
-          color.withOpacity(0),
-        ],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-      ).createShader(Offset.zero & size);
+      final fillPaint = Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            color.withOpacity(0.28),
+            color.withOpacity(0.02),
+          ],
+        ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
 
-      canvas.drawPath(
-        area,
-        Paint()..shader = shader,
-      );
+      canvas.drawPath(fillPath, fillPaint);
     }
 
-    canvas.drawPath(
-      path,
-      Paint()
-        ..color = color
-        ..strokeWidth = 2
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round,
-    );
+    final linePaint = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round;
+
+    canvas.drawPath(path, linePaint);
   }
 
   @override
-  bool shouldRepaint(covariant PerformancePainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class SparklinePainter extends CustomPainter {
   final List<double> points;
 
-  SparklinePainter(this.points);
+  const SparklinePainter(this.points);
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (points.isEmpty) return;
+    if (points.length < 2) return;
 
     final path = Path();
+    final stepX = size.width / (points.length - 1);
 
     for (int i = 0; i < points.length; i++) {
-      final point = Offset(
-        size.width * i / (points.length - 1),
-        size.height * (1 - points[i]),
-      );
-
+      final x = i * stepX;
+      final y = size.height - (points[i].clamp(0.0, 1.0) * size.height);
       if (i == 0) {
-        path.moveTo(point.dx, point.dy);
+        path.moveTo(x, y);
       } else {
-        path.lineTo(point.dx, point.dy);
+        path.lineTo(x, y);
       }
     }
 
-    canvas.drawPath(
-      path,
-      Paint()
-        ..color = const Color(0xFF397CC0)
-        ..strokeWidth = 1.7
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round,
-    );
+    final paint = Paint()
+      ..color = const Color(0xFF6FA6DA)
+      ..strokeWidth = 1.8
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    canvas.drawPath(path, paint);
   }
 
   @override
-  bool shouldRepaint(covariant SparklinePainter oldDelegate) => false;
-}
-
-class Booking {
-  final String initials;
-  final String guest;
-  final String room;
-  final String date;
-  final String amount;
-  final String status;
-
-  const Booking(
-    this.initials,
-    this.guest,
-    this.room,
-    this.date,
-    this.amount,
-    this.status,
-  );
-}
-
-class _BookingRow extends StatelessWidget {
-  final Booking booking;
-
-  const _BookingRow({required this.booking});
-
-  Color get statusColor {
-    if (booking.status == 'Confirmed' || booking.status == 'Checked in') {
-      return const Color(0xFF83B5E4);
-    }
-    return const Color(0xFFC3A46D);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: const BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Color(0xFF202832), width: .7),
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 5,
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 13,
-                  backgroundColor: const Color(0xFF1B3047),
-                  child: Text(
-                    booking.initials,
-                    style: const TextStyle(
-                      color: Color(0xFFB5D2EF),
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 7),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        booking.guest,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Color(0xFFE5E9EF),
-                          fontSize: 9,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        booking.room,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Color(0xFF858D99),
-                          fontSize: 7.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              booking.date,
-              style: const TextStyle(
-                color: Color(0xFFB8C0CA),
-                fontSize: 8,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              booking.amount,
-              style: const TextStyle(
-                color: Color(0xFFE5E9EF),
-                fontSize: 9,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 65,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 5,
-                vertical: 4,
-              ),
-              decoration: BoxDecoration(
-                color: statusColor.withOpacity(.12),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Text(
-                booking.status,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: statusColor,
-                  fontSize: 6.5,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _HeaderText extends StatelessWidget {
-  final String text;
-
-  const _HeaderText(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: const TextStyle(
-        color: Color(0xFF7F8996),
-        fontSize: 7,
-        letterSpacing: .3,
-      ),
-    );
-  }
-}
-
-class _AxisLabel extends StatelessWidget {
-  final String text;
-
-  const _AxisLabel(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(
-        color: Color(0xFF737D89),
-        fontSize: 7.5,
-      ),
-    );
-  }
-}
-
-class QuickAction {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-
-  const QuickAction(this.icon, this.title, this.subtitle);
+  bool shouldRepaint(covariant SparklinePainter oldDelegate) =>
+      oldDelegate.points != points;
 }

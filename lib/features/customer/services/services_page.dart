@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const Color navyBg = Color(0xFF0A0F1E);
 const Color navyCard = Color(0xFF131B2E);
-const Color navyElevated = Color(0xFF1A243D);
+const Color navyElevated = Color.fromARGB(255, 1, 5, 14);
 const Color goldAccent = Color(0xFFC6A15B);
 
 class ServiceCategoryModel {
@@ -96,14 +96,63 @@ class _ServicesPageState extends State<ServicesPage> {
       image: 'assets/images/image2.jpg',
       description: 'Shaded private cabana with towels and water service.',
     ),
+    ServiceEntry(
+      title: 'Poolside Cabana',
+      price: '\$50.00',
+      category: 'Swimming Pool',
+      image: 'assets/images/image51.jpg',
+      description: 'Shaded private cabana with towels and water service.',
+    ),
+    ServiceEntry(
+      title: 'Poolside Cabana',
+      price: '\$50.00',
+      category: 'Swimming Pool',
+      image: 'assets/images/image52.jpg',
+      description: 'Shaded private cabana with towels and water service.',
+    ),
+    ServiceEntry(
+      title: 'Poolside Cabana',
+      price: '\$50.00',
+      category: 'Swimming Pool',
+      image: 'assets/images/image53.jpg',
+      description: 'Shaded private cabana with towels and water service.',
+    ),
+    ServiceEntry(
+      title: 'Poolside Cabana',
+      price: '\$50.00',
+      category: 'Swimming Pool',
+      image: 'assets/images/image54.jpg',
+      description: 'Shaded private cabana with towels and water service.',
+    ),
 
     // CAFETERIA
     ServiceEntry(
       title: 'Crispy Sambuusa',
       price: '\$1.50',
       category: 'Cafeteria',
-      image: 'assets/images/image11.jpg',
+      image: 'assets/images/image55.jpg',
       description: 'Golden crispy sambuusa served hot from cafeteria.',
+    ),
+    ServiceEntry(
+      title: 'Ice Cream & Pastry',
+      price: '\$2.50',
+      category: 'Cafeteria',
+      image: 'assets/images/image56.jpg',
+      description: 'Chilled dessert and fresh bakery treat.',
+    ),
+    ServiceEntry(
+      title: 'Ice Cream & Pastry',
+      price: '\$2.50',
+      category: 'Cafeteria',
+      image: 'assets/images/image57.jpg',
+      description: 'Chilled dessert and fresh bakery treat.',
+    ),
+    ServiceEntry(
+      title: 'Ice Cream & Pastry',
+      price: '\$2.50',
+      category: 'Cafeteria',
+      image: 'assets/images/image57.jpg',
+      description: 'Chilled dessert and fresh bakery treat.',
     ),
     ServiceEntry(
       title: 'Ice Cream & Pastry',

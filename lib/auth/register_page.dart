@@ -226,7 +226,7 @@ class _RegisterPageState extends State<RegisterPage>
         ),
         const SizedBox(height: 16),
 
-        _fieldLabel('Phone Number (ZAAD / eDahab)'),
+        _fieldLabel('phone Number'),
         const SizedBox(height: 6),
         TextField(
           controller: phoneController,

@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'rooms/rooms_page.dart';
 import 'services/services_page.dart'; // Hubi in waddadu la mid tahay halka uu ku yaallo services_page.dart
 import 'rooms/room_booking_page.dart'; // <--- Waa la soo dhoofiyey (imported) bogga ballanta
+import 'profile/profile_page.dart'; // Hubi in waddadu la mid tahay halka uu ku yaallo profile_page.dart
 
 const Color darkNavy = Color(0xFF0D0F14);
 const Color cardBg = Color(0xFF1E222D);
 const Color goldAccent = Color(0xFFC6A15B);
 
 class WelcomePage extends StatefulWidget {
-  const WelcomePage({super.key});
+  final String? loggedInUser;
+
+  const WelcomePage({
+    super.key,
+    this.loggedInUser,
+  });
 
   @override
   State<WelcomePage> createState() => _WelcomePageState();
@@ -98,13 +104,23 @@ class _WelcomePageState extends State<WelcomePage> {
                       )
                     : _selectedIndex == 3
                         ? const ServicesPage() // Index 3: Services Page
-                        : Center(
-                            child: Text(
-                              'Page Index: $_selectedIndex\n(Halkan ku xir bogga u dhigma)',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(color: Colors.white, fontSize: 18),
-                            ),
-                          ),
+                        : _selectedIndex == 4
+                            ? ProfilePage( // Index 4: Profile Page
+                                userName: widget.loggedInUser,
+                                roleLabel: 'CUSTOMER',
+                                onBack: () {
+                                  setState(() {
+                                    _selectedIndex = 0;
+                                  });
+                                },
+                              )
+                            : Center(
+                                child: Text(
+                                  'Page Index: $_selectedIndex\n(Halkan ku xir bogga u dhigma)',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                                ),
+                              ),
       ),
       bottomNavigationBar: _buildBottomNav(),
     );

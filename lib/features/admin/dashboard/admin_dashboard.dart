@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import '../rooms/admin_rooms_page.dart';
 import '../bookings/admin_bookings_page.dart';
+import '../customers/admin_customer_page.dart';
+import '../payments/admin_payments_page.dart';
+import '../services/admin_services_page.dart';
+import '../reports/admin_reports_page.dart';
+import '../profile/admin_profile_page.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -340,6 +345,18 @@ class _AdminDashboardState extends State<AdminDashboard> {
         case 'Bookings':
         targetPage = const AdminRoomsPage();
         break;
+        case 'Customers':
+        targetPage = const AdminCustomerPage();
+        break;
+        case 'Payments':
+        targetPage = AdminPaymentsPage();
+        break;
+        case 'Hotel Services':
+  targetPage = AdminServicesPage();
+  break;
+  case 'Reports':
+  targetPage = AdminReportsPage();
+  break;
       
     }
 
@@ -616,10 +633,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
       QuickAction(Icons.room_service_outlined, 'Hotel Services', 'Services & requests'),
       QuickAction(Icons.payments_outlined, 'Payments', 'Transactions'),
       QuickAction(Icons.people_outline, 'Customers', 'Guest accounts'),
-      QuickAction(Icons.reviews_outlined, 'Reviews', 'Guest feedback'),
-      QuickAction(Icons.notifications_none, 'Notifications', 'Send announcements'),
       QuickAction(Icons.analytics_outlined, 'Reports', 'Hotel analytics'),
-      QuickAction(Icons.settings_outlined, 'Settings', 'Admin settings'),
     ];
 
     return Column(
@@ -718,11 +732,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
       Icons.dashboard_outlined,
       Icons.bed_outlined,
       Icons.calendar_month_outlined,
-      Icons.receipt_long_outlined,
       Icons.person_outline,
     ];
 
-    final labels = ['Home', 'Rooms', 'Bookings', 'Reports', 'Profile'];
+    final labels = ['Home', 'Rooms', 'Bookings', 'Profile'];
 
     return Container(
       decoration: const BoxDecoration(
@@ -750,7 +763,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   context,
                   MaterialPageRoute(builder: (_) => const AdminBookingsPage()),
                 );
+              } else if (i == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AdminProfilePage()),
+                );
               }
+              
             },
             child: SizedBox(
               width: 58,
@@ -770,7 +789,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     style: TextStyle(
                       color: active
                           ? const Color(0xFF8DB9E5)
-                          : muted,
+                          : const Color(0xFF858D99),
                       fontSize: 8,
                     ),
                   ),
@@ -782,7 +801,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
       ),
     );
   }
-
   Widget _legend(Color color, String label) {
     return Row(
       children: [
